@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: linear-gradient(160deg, #f5f3f3 0%, #e8e4e1 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: #2c2c2c;
+  position: relative;
+  overflow: hidden;
+  transition: background 1.5s ease;
+}
+
+.stars {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  box-shadow: 
+    100px 200px white, 200px 400px white, 300px 100px white,
+    400px 300px white, 500px 50px white, 600px 450px white,
+    700px 250px white, 800px 150px white, 900px 350px white,
+    150px 500px white, 350px 200px white, 550px 400px white,
+    750px 100px white, 50px 300px white, 250px 50px white;
+  animation: blink 4s infinite alternate;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+body.lit {
+  background: linear-gradient(160deg, #2a2a38 0%, #12121a 100%);
+  color: #f0f0f0;
+}
+
+body.lit .stars {
+  opacity: 1;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 28px;
+  max-width: 480px;
+  width: 100%;
+  padding: 70px 40px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: background 1.5s ease, border 1.5s ease, box-shadow 1.5s ease;
+}
+
+body.lit .card {
+  background: rgba(40, 40, 55, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cake {
+  font-size: 54px;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeIn 0.8s 0.3s forwards, flicker 3s infinite alternate;
+  filter: brightness(0.8);
+  transition: filter 0.8s ease;
+}
+
+body.lit .cake {
+  filter: brightness(1.2);
+  text-shadow: 0 0 15px rgba(255, 210, 100, 0.6);
+}
+
+@keyframes flicker {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.05) rotate(2deg); }
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: #1a1a1a;
+  opacity: 0;
+  animation: fadeIn 0.8s 0.5s forwards;
+  transition: color 1.5s ease;
+}
+
+body.lit h1 {
+  color: #fefefe;
+}
+
+.name {
+  font-size: 20px;
+  color: #666;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeIn 0.8s 0.7s forwards;
+  transition: color 1.5s ease;
+}
+
+body.lit .name {
+  color: #ddd;
+}
+
+.wish {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.8;
+  white-space: pre-line;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: fadeIn 0.8s 0.9s forwards;
+  transition: color 1.5s ease;
+}
+
+body.lit .wish {
+  color: #eee;
+}
+
+.message {
+  font-size: 14px;
+  color: #999;
+  line-height: 1.7;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.8s ease, opacity 0.8s ease, margin 0.8s ease;
+  margin-top: -20px;
+  padding-top: 0;
+  border-top: 1px solid transparent;
+}
+
+body.lit .message {
+  max-height: 200px;
+  opacity: 1;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ccc;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+.button {
+  display: inline-block;
+  padding: 14px 32px;
+  border-radius: 50px;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  opacity: 0;
+  animation: fadeIn 0.8s 1.1s forwards;
+  cursor: pointer;
+  border: none;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+}
+
+body.lit .button {
+  background: #ffd700;
+  color: #1a1a1a;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.music-control {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  opacity: 0;
+  animation: fadeIn 0.8s 1.3s forwards;
+}
+
+.music-control:hover {
+  transform: scale(1.1);
+}
+
+body.lit .music-control {
+  background: rgba(255, 215, 0, 0.9);
+}
+
+.music-control.playing {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.volume-control {
+  position: fixed;
+  bottom: 20px;
+  right: 80px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px 15px;
+  border-radius: 25px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+
+body.lit .volume-control {
+  background: rgba(40, 40, 55, 0.8);
+  color: #fff;
+}
+
+.volume-control.show {
+  opacity: 1;
+}
+
+.volume-slider {
+  width: 100px;
+  cursor: pointer;
+}
+
+.error-msg {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 100, 100, 0.9);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1001;
+}
+
+.error-msg.show {
+  opacity: 1;
+}
+
+.debug-info {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: #0f0;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1001;
+  font-family: monospace;
+  max-width: 90%;
+  word-break: break-all;
+}
+
+.debug-info.show {
+  opacity: 1;
+}
+
+@keyframes blink {
+  0% { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+
+#audioPlayer {
+  display: none;
+}
+</style>
+</head>
+
+<body>
+<div class="stars"></div>
+
+<div class="card">
+  <div class="cake">🎂</div>
+  <h1>Happy Birthday</h1>
+  <div class="name">致我最好的朋友</div>
+  <div class="wish">愿新的一岁
+平安顺遂，自在欢喜
+所念皆如愿，所行皆坦途</div>
+
+  <div class="button" id="lightBtn">点亮祝福</div>
+
+  <div class="message">
+    很高兴在这漫长的岁月里与你并肩。<br>
+    希望这个新的开始，能带给你无限的勇气。<br>
+    不用刻意发光，你本就是星辰。<br>
+    生日快乐，不止今日，而是朝朝暮暮。
+  </div>
+</div>
+
+<!-- 音频元素：使用相对路径 -->
+<audio id="audioPlayer" loop preload="auto">
+  <source src="music/birthday_song.mp3" type="audio/mpeg">
+  <!-- 备用：如果上面的路径不行，尝试使用 raw 链接（需要替换为你的实际链接） -->
+  <!-- <source src="https://raw.githubusercontent.com/你的用户名/birthday-wish/main/music/birthday_song.mp3" type="audio/mpeg"> -->
+  您的浏览器不支持音频播放。
+</audio>
+
+<button class="music-control" id="musicBtn" title="播放/暂停音乐">🎵</button>
+
+<div class="volume-control" id="volumeControl">
+  <span>🔊</span>
+  <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50">
+  <span id="volumeValue">50%</span>
+</div>
+
+<div class="error-msg" id="errorMsg"></div>
+<div class="debug-info" id="debugInfo"></div>
+
+<script>
+  const lightBtn = document.getElementById('lightBtn');
+  const body = document.body;
+  const audio = document.getElementById('audioPlayer');
+  const musicBtn = document.getElementById('musicBtn');
+  const volumeControl = document.getElementById('volumeControl');
+  const volumeSlider = document.getElementById('volumeSlider');
+  const volumeValue = document.getElementById('volumeValue');
+  const errorMsg = document.getElementById('errorMsg');
+  const debugInfo = document.getElementById('debugInfo');
+
+  let isPlaying = false;
+  let hasInteracted = false;
+
+  // 显示调试信息
+  function showDebug(msg) {
+    debugInfo.textContent = msg;
+    debugInfo.classList.add('show');
+    console.log('[Debug]', msg);
+  }
+
+  // 显示错误信息
+  function showError(msg) {
+    errorMsg.textContent = msg;
+    errorMsg.classList.add('show');
+    setTimeout(() => errorMsg.classList.remove('show'), 4000);
+  }
+
+  // 初始化音频设置
+  function initAudio() {
+    // 确保音量不为0
+    audio.volume = 0.5;
+    // 确保不是静音状态
+    audio.muted = false;
+    showDebug(`音频初始化: 音量=${audio.volume}, 静音=${audio.muted}`);
+  }
+
+  // 音频加载事件
+  audio.addEventListener('loadeddata', () => {
+    showDebug('音频数据已加载');
+    initAudio();
+  });
+
+  audio.addEventListener('canplay', () => {
+    showDebug('音频可以播放');
+  });
+
+  audio.addEventListener('canplaythrough', () => {
+    showDebug('音频可流畅播放');
+  });
+
+  // 音频播放事件
+  audio.addEventListener('play', () => {
+    showDebug('音频开始播放');
+    isPlaying = true;
+    musicBtn.classList.add('playing');
+    musicBtn.innerText = '⏸';
+    volumeControl.classList.add('show');
+  });
+
+  audio.addEventListener('pause', () => {
+    showDebug('音频已暂停');
+    isPlaying = false;
+    musicBtn.classList.remove('playing');
+    musicBtn.innerText = '🎵';
+  });
+
+  // 音量变化监听
+  audio.addEventListener('volumechange', () => {
+    showDebug(`音量变化: ${Math.round(audio.volume * 100)}%, 静音: ${audio.muted}`);
+  });
+
+  // 错误处理
+  audio.addEventListener('error', (e) => {
+    const error = audio.error;
+    let errorMsg = '未知错误';
+    if (error) {
+      switch(error.code) {
+        case 1: errorMsg = '下载中断'; break;
+        case 2: errorMsg = '网络错误'; break;
+        case 3: errorMsg = '解码错误(文件可能损坏)'; break;
+        case 4: errorMsg = '格式不支持'; break;
+      }
+    }
+    showDebug(`音频错误: ${errorMsg} (代码: ${error?.code})`);
+    showError(`音频加载失败: ${errorMsg}`);
+  });
+
+  // 点亮祝福按钮
+  lightBtn.addEventListener('click', async function() {
+    body.classList.add('lit');
+    lightBtn.innerText = '祝福已送达';
+    lightBtn.style.pointerEvents = 'none';
+    hasInteracted = true;
+
+    // 初始化音频
+    initAudio();
+    
+    // 强制加载音频
+    audio.load();
+
+    // 延迟一点再播放，确保加载完成
+    setTimeout(async () => {
+      try {
+        showDebug('尝试播放...');
+        await audio.play();
+        showDebug('播放成功!');
+      } catch (err) {
+        showDebug(`播放失败: ${err.message}`);
+        showError('点击右下角音乐按钮手动播放');
+        volumeControl.classList.add('show');
+      }
+    }, 100);
+  });
+
+  // 音乐控制按钮
+  musicBtn.addEventListener('click', async () => {
+    if (!hasInteracted) {
+      body.classList.add('lit');
+      lightBtn.innerText = '祝福已送达';
+      lightBtn.style.pointerEvents = 'none';
+      hasInteracted = true;
+      initAudio();
+    }
+
+    try {
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        // 重新设置音量和静音状态
+        audio.muted = false;
+        if (audio.volume === 0) audio.volume = 0.5;
+        
+        await audio.play();
+      }
+    } catch (err) {
+      showDebug(`控制播放失败: ${err.message}`);
+      showError('播放失败，请检查音频文件');
+    }
+  });
+
+  // 音量控制
+  volumeSlider.addEventListener('input', (e) => {
+    const value = e.target.value;
+    audio.volume = value / 100;
+    audio.muted = false; // 拖动音量时取消静音
+    volumeValue.textContent = value + '%';
+  });
+
+  // 页面可见性变化
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && isPlaying) {
+      audio.pause();
+    } else if (!document.hidden && isPlaying && hasInteracted) {
+      audio.play().catch(() => {});
+    }
+  });
+
+  // 页面加载时初始化
+  window.addEventListener('load', () => {
+    initAudio();
+    showDebug('页面加载完成，等待用户交互...');
+  });
+</script>
+
+</body>
+</html>
